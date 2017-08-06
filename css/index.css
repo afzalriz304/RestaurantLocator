@@ -1,0 +1,11 @@
+.head{
+	font-size: 16px;
+    font-weight: 600;
+}
+
+#contactInfo{
+	margin-top: 5% !important;
+    margin-left: 32% !important;
+    background-color: lightgray !important;
+    width: 30% !important;
+}

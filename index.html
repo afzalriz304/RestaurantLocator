@@ -1,0 +1,125 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<!--Import materialize.css-->
+<link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js" /></script>
+<link type="text/css" rel="stylesheet" href="css/index.css" />
+<!--Let browser know website is optimized for mobile-->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body ng-app="myApp" ng-controller="myController" ng-cloak>
+
+<!--navbar-->
+<nav>
+	<div class="nav-wrapper">
+		<a href="#" class="brand-logo right">Restaurant Locator</a>
+
+		<ul class="left">
+			<li><a>Home</a></li>
+		</ul>
+	</div>
+</nav>
+<div style="text-align:center; margin-top:2%">
+
+	<span><i class="material-icons prefix" style="font-size: 50px;">restaurant_menu</i></span>
+	<h4>Enter Your City To find Restaurant</h4>
+	<form>
+		<div class="input-field col s6">
+	    <i class="material-icons prefix">restaurant</i>
+			<input type="text" ng-model="resturant.name" placeholder="Enter City Name"/>
+	  </div>
+			<center><a float='right' class="waves-effect waves-red btn" ng-click="getResturant(resturant.name)">Find Restaurant</a></center>
+	</form>
+</div>
+
+<div style="text-align:center; display:none" id="tablePreloader">
+	<div class="preloader-wrapper active">
+    <div class="spinner-layer spinner-red-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div><div class="gap-patch">
+        <div class="circle"></div>
+      </div><div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+		<table ng-if="resturantList.length>0">
+			<thead>
+				<tr>
+
+					<th ng-click="orderByField='restaurant.name';reverseSort = !reverseSort">Resturant<i class="material-icons prefix">keyboard_arrow_down</i></th>
+					<th ng-click="orderByField='restaurant.cuisines';reverseSort = !reverseSort">Cuisines<i class="material-icons prefix">keyboard_arrow_down</i></th>
+					<th ng-click="orderByField='city';reverseSort = !reverseSort">City <i class="material-icons prefix">keyboard_arrow_down</i></th>
+					<th ng-click="orderByField='restaurant.user_rating.aggregate_rating';reverseSort = !reverseSort">Rating<i class="material-icons prefix">keyboard_arrow_down</i></th>
+					<th ng-click="orderByField='restaurant.user_rating.votes';reverseSort = !reverseSort">Reviews<i class="material-icons prefix">keyboard_arrow_down</i></th>
+					<th>Action</th>
+
+				</tr>
+
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in resturantList|orderBy:orderByField:reverseSort track by item.restaurant.id">
+						<td name="name">{{item.restaurant.name}}</td>
+						<td name="phone">{{item.restaurant.cuisines}}</td>
+						<td name="phone">{{city}}</td>
+						<td>
+							<div class="progress" style="height: 20px">
+						      <div class="determinate" style="width: {{item.restaurant.user_rating.aggregate_rating * 100/5}}%; background-color:{{item.restaurant.user_rating.rating_color}}"></div>
+						  </div>
+						</td>
+						<td>{{item.restaurant.user_rating.votes}}</td>
+						<td name="btn"><a  class="waves-effect waves-light btn modal-trigger" href="#modal1" ng-click="getRestaurantDetails(item.restaurant.R.res_id)">View Restaurant</a></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div id="modal1" class="modal" style="height: 350px;">
+
+			<div class="modal-content">
+				<h4>{{restaurant.name}}</h4>
+			</div>
+			<div class="modal-footer">
+
+				<div style="text-align:center; display:none" id="modalPreloader">
+					<div class="preloader-wrapper active">
+				    <div class="spinner-layer spinner-red-only">
+				      <div class="circle-clipper left">
+				        <div class="circle"></div>
+				      </div><div class="gap-patch">
+				        <div class="circle"></div>
+				      </div><div class="circle-clipper right">
+				        <div class="circle"></div>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+
+
+				<div class="">
+					<label for="">Adress:</label>
+					<div class="">
+						{{restaurant.location.address}}
+					</div>
+					<img src={{restaurant.thumb}} alt="">
+				</div>
+			</div>
+		</div>
+</body>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	 $('.modal').modal();
+});
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="js/index.js"></script>
+</html>
