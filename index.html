@@ -29,7 +29,7 @@
 	</div>
 </nav>
 <div style="text-align:center; margin-top:2%">
-
+	<img src="css/food.png" style="width: 80px;">
 	<h4>Enter Your City To find Restaurant</h4>
 	<form>
 		<div class="input-field col s6">
@@ -53,38 +53,40 @@
   </div>
 </div>
 
+<div class="col s12">
+	<table ng-if="resturantList.length>0" class="striped">
+		<thead>
+			<tr>
 
-		<table ng-if="resturantList.length>0">
-			<thead>
-				<tr>
+				<th ng-click="orderByField='restaurant.name';reverseSort = !reverseSort">Resturant<span style="margin-left:2px">^</span></th>
+				<th ng-click="orderByField='restaurant.cuisines';reverseSort = !reverseSort">Cuisines<span style="margin-left:2px">^</span></th>
+				<th ng-click="orderByField='city';reverseSort = !reverseSort">City <span style="margin-left:2px">^</span></th>
+				<th ng-click="orderByField='restaurant.user_rating.aggregate_rating';reverseSort = !reverseSort">Rating<span style="margin-left:2px">^</span></th>
+				<th ng-click="orderByField='restaurant.user_rating.votes';reverseSort = !reverseSort">Reviews<span style="margin-left:2px">^</span></th>
+				<th>Action</th>
 
-					<th ng-click="orderByField='restaurant.name';reverseSort = !reverseSort">Resturant<i class="material-icons prefix">keyboard_arrow_down</i></th>
-					<th ng-click="orderByField='restaurant.cuisines';reverseSort = !reverseSort">Cuisines<i class="material-icons prefix">keyboard_arrow_down</i></th>
-					<th ng-click="orderByField='city';reverseSort = !reverseSort">City <i class="material-icons prefix">keyboard_arrow_down</i></th>
-					<th ng-click="orderByField='restaurant.user_rating.aggregate_rating';reverseSort = !reverseSort">Rating<i class="material-icons prefix">keyboard_arrow_down</i></th>
-					<th ng-click="orderByField='restaurant.user_rating.votes';reverseSort = !reverseSort">Reviews<i class="material-icons prefix">keyboard_arrow_down</i></th>
-					<th>Action</th>
+			</tr>
 
-				</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="item in resturantList|orderBy:orderByField:reverseSort track by item.restaurant.id">
+					<td name="name">{{item.restaurant.name}}</td>
+					<td name="phone">{{item.restaurant.cuisines}}</td>
+					<td name="phone">{{city}}</td>
+					<td>
+						<div class="progress" style="height: 20px">
+								<div class="determinate" style="width: {{item.restaurant.user_rating.aggregate_rating * 100/5}}%; background-color:{{item.restaurant.user_rating.rating_color}}"></div>
+						</div>
+					</td>
+					<td>{{item.restaurant.user_rating.votes}}</td>
+					<td name="btn"><a  class="waves-effect waves-light btn modal-trigger" href="#modal1" ng-click="getRestaurantDetails(item.restaurant.R.res_id)">View Restaurant</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 
-			</thead>
-			<tbody>
-				<tr ng-repeat="item in resturantList|orderBy:orderByField:reverseSort track by item.restaurant.id">
-						<td name="name">{{item.restaurant.name}}</td>
-						<td name="phone">{{item.restaurant.cuisines}}</td>
-						<td name="phone">{{city}}</td>
-						<td>
-							<div class="progress" style="height: 20px">
-						      <div class="determinate" style="width: {{item.restaurant.user_rating.aggregate_rating * 100/5}}%; background-color:{{item.restaurant.user_rating.rating_color}}"></div>
-						  </div>
-						</td>
-						<td>{{item.restaurant.user_rating.votes}}</td>
-						<td name="btn"><a  class="waves-effect waves-light btn modal-trigger" href="#modal1" ng-click="getRestaurantDetails(item.restaurant.R.res_id)">View Restaurant</a></td>
-				</tr>
-			</tbody>
-		</table>
 
-		<div id="modal1" class="modal" style="height: 350px;">
+		<div id="modal1" class="modal col s12" style="height: 350px;">
 
 			<div class="modal-content">
 				<h4>{{restaurant.name}}</h4>
